@@ -44,7 +44,7 @@ jobs:
       - name: Test
         run: go test -v ./...
         env:
-          DATABASE_HOST: postgres
+          DATABASE_HOST: localhost
           DATABASE_PORT: 5432
           DATABASE_NAME: test
           DATABASE_USER: root
