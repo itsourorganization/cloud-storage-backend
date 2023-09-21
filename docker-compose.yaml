@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "pass"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "cloud"
+    ports:
+      - "5432:5432"
+
+  server:
+    image: cloud
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
