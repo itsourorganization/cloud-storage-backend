@@ -37,6 +37,12 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: ${{matrix.go}}
+
+      - name: Build
+        run: go build -v cmd/cloud/*.go
+
+      - name: Test
+        run: go test -v ./...
         env:
           DATABASE_HOST: postgres
           DATABASE_PORT: 5432
@@ -44,8 +50,3 @@ jobs:
           DATABASE_USER: root
           DATABASE_PASSWORD: postgres
           CONFIG_PATH: config/config.yaml
-      - name: Build
-        run: go build -v cmd/cloud/*.go
-
-      - name: Test
-        run: go test -v ./...
