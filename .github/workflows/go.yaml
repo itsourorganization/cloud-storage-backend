@@ -14,22 +14,6 @@ jobs:
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: "root"
-          POSTGRES_DB: "test"
-
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
     steps:
       - uses: actions/checkout@v3
 
@@ -40,10 +24,3 @@ jobs:
 
       - name: Test
         run: go test -v ./...
-        env:
-          DATABASE_HOST: 0.0.0.0
-          DATABASE_PORT: 5432
-          DATABASE_NAME: test
-          DATABASE_USER: root
-          DATABASE_PASSWORD: postgres
-          CONFIG_PATH: config/config.yaml

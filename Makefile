@@ -1,7 +1,13 @@
 .PHONY: run ling test docs
 
+ifneq (,$(wildcard ./.env))
+    include .env
+    export
+endif
+
 run:
-	go build -o app cmd/cloud/main.go && CONFIG_PATH=config/config.yaml ./app
+	go generate internal/repository/posgres/ent/
+	go build -o app cmd/cloud/main.go && ./app
 
 lint:
 	golangci-lint run
