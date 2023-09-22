@@ -42,7 +42,7 @@ func makeCl(t *testing.T) *ent.Client {
 		cfg.Password)
 	cl, err := ent.Open("postgres", dbOpts)
 	require.NoError(t, err)
-	err = cl.Schema.Create(ctx, migrate.WithDropColumn(true), migrate.WithDropIndex(true))
+	err = cl.Schema.Create(context.Background(), migrate.WithDropColumn(true), migrate.WithDropIndex(true))
 	require.NoError(t, err)
 	return cl
 
