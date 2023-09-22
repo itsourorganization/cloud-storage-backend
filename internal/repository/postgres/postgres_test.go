@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/undefeel/cloud-storage-backend/internal/repository"
 	"github.com/undefeel/cloud-storage-backend/internal/repository/postgres/ent"
+	"github.com/undefeel/cloud-storage-backend/internal/repository/postgres/ent/migrate"
 	"github.com/undefeel/cloud-storage-backend/internal/services"
 	"os"
 	"testing"
@@ -40,6 +41,8 @@ func makeCl(t *testing.T) *ent.Client {
 		cfg.DbName,
 		cfg.Password)
 	cl, err := ent.Open("postgres", dbOpts)
+	require.NoError(t, err)
+	err = cl.Schema.Create(ctx, migrate.WithDropColumn(true), migrate.WithDropIndex(true))
 	require.NoError(t, err)
 	return cl
 
