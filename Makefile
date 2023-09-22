@@ -1,4 +1,4 @@
-.PHONY: run ling test docs
+.PHONY: run ling test docs gen
 
 ifneq (,$(wildcard ./.env))
     include .env
@@ -9,6 +9,8 @@ run:
 	go generate internal/repository/posgres/ent/
 	go build -o app cmd/cloud/main.go && ./app
 
+gen:
+	go generate ./...
 lint:
 	golangci-lint run
 
