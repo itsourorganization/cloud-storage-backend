@@ -38,13 +38,10 @@ jobs:
         with:
           go-version: ${{matrix.go}}
 
-      - name: Build
-        run: go build -v cmd/cloud/*.go
-
       - name: Test
         run: go test -v ./...
         env:
-          DATABASE_HOST: localhost
+          DATABASE_HOST: 0.0.0.0
           DATABASE_PORT: 5432
           DATABASE_NAME: test
           DATABASE_USER: root
