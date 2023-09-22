@@ -79,7 +79,6 @@ func TestRepository_CreateUser(t *testing.T) {
 		},
 	}
 	cl := makeCl(t)
-	defer cl.User.Delete().Exec(context.Background())
 	repo := Repository{cl: cl}
 	for _, cs := range cases {
 		t.Run(cs.name, func(t *testing.T) {
