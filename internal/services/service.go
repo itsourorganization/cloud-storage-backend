@@ -18,6 +18,7 @@ type Service struct {
 //go:generate go run github.com/vektra/mockery/v2@v2.33.3 --all
 type RepositoryProvider interface {
 	CreateUser(ctx context.Context, us *User) (*User, error)
+	FindUserByLogin(ctx context.Context, us *User) (*User, error)
 }
 
 type Authenticator interface {
@@ -50,6 +51,29 @@ func (s Service) SignUp(ctx context.Context, user *User) (jwt.TokenPair, error) 
 		err = fmt.Errorf("%s: %w", op, err)
 		return jwt.TokenPair{}, switchJwtErrors(err)
 	}
+	return pair, nil
+}
+
+// SignIn create user in repository, compare passwords and return jwt tokens pair
+//
+// Errors types: ErrIncorrectInput, ErrNotFound
+func (s Service) SignIn(ctx context.Context, user *User) (jwt.TokenPair, error) {
+	const op = "services.service.SignIn"
+	us, err := s.repo.FindUserByLogin(ctx, user)
+	if err != nil {
+		err = fmt.Errorf("%s: %w", op, err)
+		return jwt.TokenPair{}, switchRepoErrors(err)
+	}
+	err = checkHash(user.Password, us.Password)
+	if err != nil {
+		return jwt.TokenPair{}, fmt.Errorf("%s: %w %w", op, ErrIncorrectInput, err)
+	}
+
+	pair, err := s.auth.NewPair(us.Id)
+	if err != nil {
+		return jwt.TokenPair{}, fmt.Errorf("%s: %w", op, err)
+	}
+
 	return pair, nil
 }
 

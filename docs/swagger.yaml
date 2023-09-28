@@ -30,6 +30,39 @@ info:
   title: Cloud storage API
   version: "1.0"
 paths:
+  /signIn:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: SignIn data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/transport.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/jwt.TokenPair'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrMsg'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrMsg'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrMsg'
+      summary: Create user
+      tags:
+      - auth
   /signUp:
     post:
       consumes:

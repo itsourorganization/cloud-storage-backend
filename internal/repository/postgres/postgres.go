@@ -6,6 +6,7 @@ import (
 	"github.com/undefeel/cloud-storage-backend/internal/repository"
 	"github.com/undefeel/cloud-storage-backend/internal/repository/postgres/ent"
 	"github.com/undefeel/cloud-storage-backend/internal/repository/postgres/ent/migrate"
+	"github.com/undefeel/cloud-storage-backend/internal/repository/postgres/ent/user"
 	"github.com/undefeel/cloud-storage-backend/internal/services"
 )
 
@@ -20,7 +21,6 @@ func New(ctx context.Context, host, port, user, dbName, password string) (Reposi
 	if err != nil {
 		return Repository{}, err
 	}
-
 	if err := cl.Schema.Create(ctx, migrate.WithDropColumn(true), migrate.WithDropIndex(true)); err != nil {
 		return Repository{}, err
 	}
@@ -50,4 +50,16 @@ func (r Repository) CreateUser(ctx context.Context, us *services.User) (*service
 	}
 
 	return convertEntUserToService(dbUser), nil
+}
+
+func (r Repository) FindUserByLogin(ctx context.Context, us *services.User) (*services.User, error) {
+	const op = "repository.postgres.FingUserByLogin"
+	dbUs, err := r.cl.User.Query().Where(user.Login(us.Login)).Only(ctx)
+	if err != nil {
+		if ent.IsNotFound(err) {
+			return nil, fmt.Errorf("%s: %w %w", op, repository.ErrNotFound, err)
+		}
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+	return convertEntUserToService(dbUs), nil
 }

@@ -40,6 +40,32 @@ func (_m *RepositoryProvider) CreateUser(ctx context.Context, us *services.User)
 	return r0, r1
 }
 
+// FindUserByLogin provides a mock function with given fields: ctx, us
+func (_m *RepositoryProvider) FindUserByLogin(ctx context.Context, us *services.User) (*services.User, error) {
+	ret := _m.Called(ctx, us)
+
+	var r0 *services.User
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *services.User) (*services.User, error)); ok {
+		return rf(ctx, us)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *services.User) *services.User); ok {
+		r0 = rf(ctx, us)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*services.User)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *services.User) error); ok {
+		r1 = rf(ctx, us)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // NewRepositoryProvider creates a new instance of RepositoryProvider. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewRepositoryProvider(t interface {
