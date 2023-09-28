@@ -1,0 +1,27 @@
+name: Go
+
+on:
+  push:
+    branches: [ "main", "v0.1" ]
+  pull_request:
+    branches: [ "main", "v0.1" ]
+
+jobs:
+  runner-job:
+    strategy:
+      matrix:
+        go: [1.21.0]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{matrix.go}}
+      - name: Generate
+        run: go generate ./...
+      - name: Test
+        run: go test -v ./...

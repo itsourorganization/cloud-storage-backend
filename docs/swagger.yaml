@@ -1,0 +1,98 @@
+basePath: /api/v1
+definitions:
+  jwt.TokenPair:
+    properties:
+      access:
+        type: string
+      refresh:
+        type: string
+    type: object
+  server.ErrMsg:
+    properties:
+      msg:
+        type: string
+    type: object
+  transport.User:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server celler server.
+  termsOfService: http://swagger.io/terms/
+  title: Cloud storage API
+  version: "1.0"
+paths:
+  /signIn:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: SignIn data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/transport.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/jwt.TokenPair'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrMsg'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrMsg'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrMsg'
+      summary: Create user
+      tags:
+      - auth
+  /signUp:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: SignUp data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/transport.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/jwt.TokenPair'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrMsg'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrMsg'
+      summary: Create user
+      tags:
+      - auth
+securityDefinitions:
+  Jwt:
+    type: basic
+swagger: "2.0"

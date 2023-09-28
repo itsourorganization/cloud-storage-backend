@@ -1,0 +1,9 @@
+http:
+  bind_addr: ":8081"
+
+database:
+    host: "0.0.0.0"
+    port: "5432"
+    user: "root"
+    db_name: "cloud"
+

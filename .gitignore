@@ -13,9 +13,19 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+app
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
-
+.env
 # Go workspace file
 go.work
+
+#IDE's
+.idea/
+
+#ent
+internal/repository/postgres/ent/**/*
+!internal/repository/postgres/ent/schema
+!internal/repository/postgres/ent/migrate/migrations
+!internal/repository/postgres/ent/generate.go
